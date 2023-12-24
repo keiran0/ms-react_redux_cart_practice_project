@@ -6,7 +6,8 @@ import Notification from './components/UI/Notification';
 import { useSelector, useDispatch } from 'react-redux'; 
 
 import { useEffect } from 'react';
-import { sendCartData } from './store/cartItems';
+import { sendCartData } from './store/cartActions';
+import { fetchCartData } from './store/cartActions';
 
 let isInitial = true; //define outside component function so that this is not changed and not reinitialised if the component renders again.
 
@@ -17,14 +18,25 @@ function App() {
 
   const cart = useSelector(state => state.cartItems)
 
+  useEffect(()=>{
+    dispatch(fetchCartData())
+  }, [])
+
+
   //putting side effect into component
   useEffect(()=>{
     if (isInitial){
       isInitial = false;
       return;
     }
-    dispatch(sendCartData(cart))
-  },[cart])
+
+    if (cart.changed) {
+      dispatch(sendCartData(cart))
+    }
+    
+
+
+  }, [cart])
 
   return (
     <>
