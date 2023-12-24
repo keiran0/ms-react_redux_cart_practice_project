@@ -12,7 +12,7 @@ const Cart = (props) => {
     <Card className={classes.cart}>
       <h2>Your Shopping Cart</h2>
       <ul>
-        {cartSelector.map((cartItem)=><CartItem item={{title: cartItem.title, quantity:cartItem.quantity, total:cartItem.quantity*cartItem.price, price:cartItem.price}}/>)}
+        {cartSelector.map((cartItem)=><CartItem key={cartItem.title} item={{title: cartItem.title, quantity:cartItem.quantity, total:cartItem.quantity*cartItem.price, price:cartItem.price}}/>)}
       </ul>
     </Card>
   );
