@@ -9,11 +9,11 @@ const CartItem = (props) => {
   const dispatch = useDispatch();
 
   function increaseHandler(){
-    dispatch(cartActions.addItem({title, quantity: 1, price}))
+    dispatch(cartActions.addItem({title, price}))
   }
 
   function decreaseHandler(){
-    dispatch(cartActions.addItem({title, quantity: -1, price}))
+    dispatch(cartActions.removeItem({title, price}))
   }
 
   return (
