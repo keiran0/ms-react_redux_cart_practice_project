@@ -1,4 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit'
+import { visibilityActions } from './cartVisibility'
 
 const CartSlice = createSlice({
     name: 'cart',
@@ -37,6 +38,44 @@ const CartSlice = createSlice({
         }
     }
 })
+
+//creating our own action creator
+export const sendCartData = (cart)=>{
+    return async (dispatch)=>{ //create function that returns another function
+        dispatch(
+            visibilityActions.showNotification({
+                status: 'pending',
+                title: 'sending',
+                message: 'Sending cart data'
+            })
+        )
+
+        const sendRequest = async () => {
+            const response = await fetch('https://react-testproject-9cde5-default-rtdb.asia-southeast1.firebasedatabase.app/cart.json', { 
+                method: 'PUT', body: JSON.stringify(cart)
+              }) //PUT overwrites, POST adds to list
+    
+            if (!response.ok){
+                throw new Error('sending cart data failed')
+            }
+        }
+
+        try {
+            await sendRequest();
+            dispatch(visibilityActions.showNotification({
+                status: 'success',
+                title: 'Success!',
+                message: 'Sent cart data successfully.'
+              }))
+        } catch (error) {
+            dispatch(visibilityActions.showNotification({
+                status: 'error',
+                title: 'Error!',
+                message: 'Sending cart data failed.'
+              }))
+        }
+    }
+}
 
 export const cartActions = CartSlice.actions
 export default CartSlice
